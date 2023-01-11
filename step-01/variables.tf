@@ -16,7 +16,7 @@ variable "vm_startup_script" {
 }
 variable "vm_imagedatastore_id" {
     description = "Open Nebula datastore ID"
-    default = 109 # => "nuada_ssd"
+    default = 101 # => nuada_pool
 }
 variable "vm_network_id" {
     description = "ID of the virtual network to attach to the virtual machine"
