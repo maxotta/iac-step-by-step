@@ -5,8 +5,8 @@ export const nebulaApi = {
 }
 
 export const normalNode = {
-    vmImageName: "Ubuntu Minimal 22.04",
-    vmImageUrl: "https://marketplace.opennebula.io/appliance/9fc4becb-a667-40a0-ba92-b580999150b5/download/0",
+    vmImageName: "Alpine Linux 3.16",
+    vmImageUrl: "https://marketplace.opennebula.io//appliance/73867a80-7ae7-013b-d6ef-7875a4a4f528/download/0",
     vmAdmin: "nodeadm",
     vmPubkey: "your-public-ssh-key AAAAE2VjZHNhLX...etc...== user@host",
     vmInitLog: "/var/log/node-init.log",

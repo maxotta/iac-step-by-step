@@ -1,54 +1,56 @@
 /*
- * Terraform CDK example project - Cloud INIT
+ * Terraform CDK Resources:
+ *  https://developer.hashicorp.com/terraform/cdktf/concepts/providers
+ */
+/*
+ * First Terraform CDK example project
  */
 import { Construct } from "constructs";
 import { App, TerraformOutput, TerraformStack, TerraformLocal } from "cdktf";
 import { OpennebulaProvider } from "./.gen/providers/opennebula/opennebula-provider";
+import { NullProvider } from "./.gen/providers/null/null-provider";
 import { Image, VirtualMachine, VirtualMachineDisk } from "./.gen/providers/opennebula";
 import * as cfg from "./config";
+import * as path from 'path';
+
+// for latest provider version see https://registry.terraform.io/providers/OpenNebula/opennebula/latest
 
 class MyStack extends TerraformStack {
   constructor(scope: Construct, name: string) {
     super(scope, name);
 
     new OpennebulaProvider(this, "opennebula", cfg.nebulaApi);
+    new NullProvider(this, "null");
 
     const vmImage = new Image(this, "os-vm-image", {
         name: cfg.normalNode.vmImageName,
         datastoreId: cfg.normalNode.vmDatastoreId,
         persistent: false,
         path: cfg.normalNode.vmImageUrl,
-        permissions: "600",
-        timeout: 10
+        permissions: "600"
     });
     
-    const imageId = new TerraformLocal(this, "imageId", vmImage.id);
+    const vmImageId = new TerraformLocal(this, "imageId", vmImage.id);
 
-    const vmName = "test-node-vm";
+    const vmNamePrefix = "test-node-vm-";
 
+    for (let i = 1; i <= cfg.parameters.instanceCount; i++) {
+      const vm = this.createVm(vmNamePrefix + i, vmImageId);
+      new TerraformOutput(this, "vm-ip-addr-" + i, {
+        value: vm.ip
+      });
+    };
+  }  // constructor
+
+  private createVm(vmName: string, vmImageId: TerraformLocal): VirtualMachine {
+    const projectDir = path.resolve();
     const vmDisk: VirtualMachineDisk = {
-      imageId: imageId.asNumber,
+      imageId: vmImageId.asNumber,
       target: "vda",
-      size: 16000 // 16G
-    }
+      size: 12000 // 12G
+    };
 
-    // const initEnv : Map<string, string> = new Map([
-    //   ["INIT_USER", cfg.normalNode.vmAdmin],
-    //   ["INIT_PUBKEY", cfg.normalNode.vmPubkey],
-    //   ["INIT_LOG", cfg.normalNode.vmInitLog],
-    //   ["INIT_HOSTNAME", vmName]
-    // ]);
-
-    // const setEnvScript = this.buildInitEnvScript(initEnv);
-    // const initScript = this.buildAndEncodeInitScript(
-    //                   setEnvScript,
-    //                   [ "init-start.sh",
-    //                     "init-node.sh",
-    //                     "init-users.sh",
-    //                     "init-finish.sh" ]);
-
-    const vm = new VirtualMachine(this, "test-node-vm",
-    {
+    const vm = new VirtualMachine(this, vmName, {
       name: vmName,
       description: "First testing VM",
       cpu: 1,
@@ -60,21 +62,44 @@ class MyStack extends TerraformStack {
         NETWORK: "yes",
         HOSTNAME: vmName,
         SSH_PUBLIC_KEY: cfg.normalNode.vmPubkey,
-        USER_DATA: "#cloud-config\n\nruncmd:\n - mkdir /var/log/max\n"
       },
       os: cfg.normalNode.vmOs,
       disk: [ vmDisk ],
       graphics: cfg.normalNode.vmGraphics,
-      nic: [ cfg.normalNode.vmNic0 ],
-      timeout: 10
+      nic: [ cfg.normalNode.vmNic0 ]
     });
   
-    new TerraformOutput(this, "vm-ip-addr", {
-      value: vm.ip
+    vm.addOverride("connection", {
+      type: "ssh",
+      user: "root",
+      host: "${self.ip}"
     });
+    vm.addOverride("provisioner", [
+      {
+        "file": {
+          "source": projectDir + "/init-scripts/",
+          "destination": "/tmp/"
+        }
+      }, {
+        "remote-exec": {
+          "inline": [
+            "export INIT_USER=" + cfg.normalNode.vmAdmin,
+            "export INIT_PUBKEY='" + cfg.normalNode.vmPubkey + "'",
+            "export INIT_LOG=" + cfg.normalNode.vmInitLog,
+            "export INIT_HOSTNAME=${self.name}",
+            "touch " + cfg.normalNode.vmInitLog,
+            "sh /tmp/init-node.sh",
+            "sh /tmp/init-users.sh",
+            "reboot"
+          ]      
+        }
+      }
+    ]);
+    return vm;
+  } // createVm
 
-  }
-}
+
+} // class MyStack
 
 const app = new App();
 new MyStack(app, "step-05");
