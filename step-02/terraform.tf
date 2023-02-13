@@ -45,7 +45,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
   disk {
     image_id = opennebula_image.os-image.id
     target   = "vda"
-    size     = 16000 # 16GB
+    size     = 12000 # 12GB
   }
 
   graphics {
@@ -87,3 +87,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
 output "test-master-vm_id" {
   value = "${opennebula_virtual_machine.test-node-vm.*.ip}"
 }
+
+#
+# EOF
+#

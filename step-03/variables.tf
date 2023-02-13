@@ -22,7 +22,6 @@ variable "vm_node_init_log" {
 }
 variable "vm_imagedatastore_id" {
     description = "Open Nebula datastore ID"
-    #default = 109 # => "nuada_ssd"
     default = 101 # => "nuada_pool"
 }
 variable "vm_network_id" {
