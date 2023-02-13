@@ -1,0 +1,12 @@
+ENV['VAGRANT_EXPERIMENTAL'] = "cloud_init,disks"
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/kinetic-server-cloud"
+    config.vm.box_url = "http://cloud-images.ubuntu.com/kinetic/current/kinetic-server-cloudimg-amd64-vagrant.box"
+
+    config.vm.define "node-1" do |node|
+        node.vm.network "private_network", ip: "10.0.1.10"
+        node.vm.cloud_init content_type: "text/cloud-config", path: "cloud-config.yml"
+    end
+end
+

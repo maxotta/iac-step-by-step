@@ -23,7 +23,7 @@ resource "opennebula_image" "os-image" {
 }
 
 resource "opennebula_virtual_machine" "test-node-vm" {
-  # This will create 1 instance:
+  # This will create `vm_instance_count` instances:
   count = var.vm_instance_count
   name = "test-node-vm-${count.index + 1}"
   description = "Testing VM #${count.index + 1}"
@@ -45,7 +45,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
   disk {
     image_id = opennebula_image.os-image.id
     target   = "vda"
-    size     = 16000 # 16GB
+    size     = 12000 # 12GB
   }
 
   graphics {
@@ -87,3 +87,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
 output "test-master-vm_id" {
   value = "${opennebula_virtual_machine.test-node-vm.*.ip}"
 }
+
+#
+# EOF
+#
