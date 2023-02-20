@@ -1,5 +1,5 @@
-# iac-step-by-step
-IaC (Infrastructure as Code) Step by Step
+# IaC (Infrastructure as Code) Step by Step
+[![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
 This repository contains examples used in practical labs related to cloud technologies taught at [DCSE](http://www.kiv.zcu.cz/en/education/index.html) / [UWB](https://www.zcu.cz/en/index.html)
 
@@ -119,3 +119,14 @@ Of course, replace the provided ```endpoint```, ```username``` and ```password``
 * [***Step 01***](step-01) - very basic initial example (HCL)
 * [***Step 02***](step-02) - remote-exec script provisioner (HCL)
 * [***Step 03***](step-03) - create similar VMs (HCL)
+
+---
+
+This work is licensed under a
+[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
+
+[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+
+[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
+[cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
+[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
