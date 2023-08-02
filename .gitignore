@@ -3,4 +3,6 @@
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+.gen
+node_modules
 
