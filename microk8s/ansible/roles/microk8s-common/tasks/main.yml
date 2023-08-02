@@ -1,0 +1,32 @@
+# Common MicroK8S node setup
+- debug:
+    msg: "Running 'common' tasks on {{ ansible_hostname }} as {{ ansible_user }}"
+
+# Install SNAP package manager
+- name: Install SNAP package manager
+  apt:
+    name: snapd
+    state: present
+
+# Install MicroK8S snap package
+- name: Install MicroK8S snap package with option --classic
+  community.general.snap:
+    name: microk8s
+    classic: true
+
+# Install "foo" and "bar" snap
+- name: Create snap alias
+  community.general.snap_alias:
+    name: microk8s.kubectl
+    alias: kubectl
+
+# Add the current user to the MicroK8S group
+- name: Adding user '{{ ansible_user }}' to 'microk8s' group
+  user:
+    name: '{{ ansible_user }}'
+    groups: microk8s
+    append: yes
+
+#
+# EOF
+#

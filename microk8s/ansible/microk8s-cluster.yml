@@ -1,0 +1,13 @@
+# Based on https://github.com/istvano/ansible_role_microk8s
+---
+  - name: MicroK8S master setup
+    hosts: microk8s_master
+    become: true
+    roles:
+      - microk8s-master
+  
+  - name: MicroK8S node setup
+    hosts: microk8s_nodes
+    become: true
+    roles:
+      - microk8s-node
