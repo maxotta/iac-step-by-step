@@ -1,0 +1,19 @@
+{
+  "name": "Terraform and OpenNebula Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+          "ms-azuretools.vscode-docker",
+          "esbenp.prettier-vscode",
+          "mohsen1.prettify-json",
+          "ms-python.vscode-pylance",
+          "ms-python.python",
+          "HashiCorp.terraform",
+          "redhat.ansible"]
+    }
+  }
+}
+
