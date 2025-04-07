@@ -1,0 +1,23 @@
+# MicroK8S master setup
+
+- debug:
+    msg: "Running 'microk8s-master' tasks on {{ ansible_hostname }} as {{ ansible_user }}"
+
+- name: Waiting for microk8s to be ready on microk8s host node
+  command: "microk8s status --wait-ready"
+  changed_when: false
+
+- name: Enable 'hostpath-storage' addon
+  shell: "microk8s enable hostpath-storage"
+  register: enable_addon
+  changed_when: "'is already enabled' not in enable_addon.stdout"
+
+- name: Enable 'ingress' addon
+  shell: "microk8s enable ingress"
+  register: enable_addon
+  changed_when: "'is already enabled' not in enable_addon.stdout"
+
+- name: Enable 'dashboard' addon
+  shell: "microk8s enable dashboard"
+  register: enable_addon
+  changed_when: "'is already enabled' not in enable_addon.stdout"

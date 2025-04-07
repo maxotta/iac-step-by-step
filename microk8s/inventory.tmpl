@@ -1,0 +1,12 @@
+[microk8s_master]
+%{ for ip in k8s_master ~}
+${ip}
+%{ endfor ~}
+
+[microk8s_nodes]
+%{ for ip in k8s_nodes ~}
+${ip}
+%{ endfor ~}
+
+[all:vars]
+ansible_user=${vm_admin_user}
