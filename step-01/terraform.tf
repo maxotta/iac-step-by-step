@@ -3,7 +3,7 @@ terraform {
   required_providers {
     opennebula = {
       source = "OpenNebula/opennebula"
-      version = "0.4.3"
+      version = "1.4"
     }
   }
 }
