@@ -61,6 +61,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
     type = "ssh"
     user = "root"
     host = "${self.ip}"
+    private_key = file("/var/iac-dev-container-data/id_ecdsa")
   }
 
   provisioner "file" {

@@ -7,11 +7,15 @@
  */
 import { Construct } from "constructs";
 import { App, TerraformOutput, TerraformStack, TerraformLocal } from "cdktf";
-import { OpennebulaProvider } from "./.gen/providers/opennebula/opennebula-provider";
-import { NullProvider } from "./.gen/providers/null/null-provider";
-import { Image, VirtualMachine, VirtualMachineDisk } from "./.gen/providers/opennebula";
+import { OpennebulaProvider } from "./.gen/providers/opennebula/provider";
+import { NullProvider } from "./.gen/providers/null/provider";
+import { Image } from "./.gen/providers/opennebula/image";
+import { VirtualMachine, VirtualMachineDisk } from "./.gen/providers/opennebula/virtual-machine";
+
 import * as cfg from "./config";
 import * as path from 'path';
+
+const fs = require('fs');
 
 // for latest provider version see https://registry.terraform.io/providers/OpenNebula/opennebula/latest
 
@@ -64,10 +68,12 @@ class MyStack extends TerraformStack {
       nic: [ cfg.normalNode.vmNic0 ]
     });
   
+    const privateKey = this.getPrivateKey();
     vm.addOverride("connection", {
       type: "ssh",
       user: "root",
-      host: "${self.ip}"
+      host: "${self.ip}",
+      private_key: privateKey,
     });
     vm.addOverride("provisioner", [
       {
@@ -93,7 +99,12 @@ class MyStack extends TerraformStack {
     new TerraformOutput(this, "vm-ip-addr", {
       value: vm.ip
     });
-  }  
+  }
+  
+  private getPrivateKey(): string {  
+    return fs.readFileSync("/var/iac-dev-container-data/id_ecdsa", "utf8");
+  }
+    
 }
 
 const app = new App();

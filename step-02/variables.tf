@@ -27,6 +27,7 @@ variable "vm_imagedatastore_id" {
 variable "vm_network_id" {
     description = "ID of the virtual network to attach to the virtual machine"
     default = 3 # => "vlan173"
+    # default = 1 # => "vlan121 (aether)"
 }
 variable "vm_image_name" {
     description = "VM OS image name"

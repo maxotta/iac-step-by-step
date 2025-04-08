@@ -3,7 +3,7 @@ terraform {
   required_providers {
     opennebula = {
       source = "OpenNebula/opennebula"
-      version = "0.4.3"
+      version = "1.4"
     }
   }
 }
@@ -61,6 +61,7 @@ resource "opennebula_virtual_machine" "test-node-vm" {
     type = "ssh"
     user = "root"
     host = "${self.ip}"
+    private_key = file("/var/iac-dev-container-data/id_ecdsa")
   }
 
   provisioner "file" {
