@@ -9,6 +9,7 @@ sed -i "s/127\.0\.0\.1 localhost.*/127.0.0.1 localhost ${INIT_HOSTNAME}/g" /etc/
 # Update the outdated stuff
 apk update
 apk upgrade
+apk add sudo
 
 echo "INIT Node done." >> ${INIT_LOG}
 

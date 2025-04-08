@@ -1,14 +1,14 @@
 {
   "language": "typescript",
   "app": "npx ts-node main.ts",
-  "projectId": "b5f39998-7da4-42d6-b048-d2bd1d6ba73c",
+  "projectId": "58840d3c-dec1-4a34-bc90-b7445d3673bd",
+  "sendCrashReports": "false",
   "terraformProviders": [
-    "opennebula/opennebula@~>1.1.1",
+    "opennebula/opennebula@~>1.4.1",
     "null@~>3.1"
   ],
   "terraformModules": [],
   "context": {
-    "excludeStackIdFromLogicalIds": "true",
-    "allowSepCharsInLogicalIds": "true"
+
   }
 }

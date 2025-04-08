@@ -5,8 +5,8 @@ export const nebulaApi = {
 }
 
 export const normalNode = {
-    vmImageName: "Alpine Linux 3.16",
-    vmImageUrl: "https://marketplace.opennebula.io//appliance/73867a80-7ae7-013b-d6ef-7875a4a4f528/download/0",
+    vmImageName: "CICD - Alpine Linux 3.21",
+    vmImageUrl: "https://marketplace.opennebula.io/appliance/9ea07f80-beb8-013d-a75b-7875a4a4f528/download/0",
     vmAdmin: "nodeadm",
     vmPubkey: "your-public-ssh-key AAAAE2VjZHNhLX...etc...== user@host",
     vmInitLog: "/var/log/node-init.log",
@@ -21,5 +21,7 @@ export const normalNode = {
     },
     vmNic0: {
         networkId: 3 // vlan173
+//      networkId: 1 // "vlan121 (aether)"
+
     }
 }
